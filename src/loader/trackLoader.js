@@ -1,25 +1,23 @@
 import Pbf from "pbf";
 
-export const trackLoader = (maxFrame) => ({
+export const trackLoader = () => ({
   name: "Tracks",
   id: "Tracks-pbf",
   version: "latest",
   extensions: ["pbf"],
-  mimeTypes: ["application/x-protobuf", "application/octet-stream"],
+  mimeTypes: ["application/x-protobuf", "application/octet-stream", "application/protobuf"],
   worker: false,
-  parse: async (arrayBuffer) => parseTrack(arrayBuffer, maxFrame),
-  parseSync: async (arrayBuffer) => parseTrack(arrayBuffer, maxFrame),
+  parse: async (arrayBuffer) => parseTrack(arrayBuffer),
+  parseSync: async (arrayBuffer) => parseTrack(arrayBuffer),
 });
 
 function readData(_, data, pbf) {
   data.push(pbf.readPackedSVarint());
 }
 
-
-const parseTrack = (arrayBuffer, maxFrame) => {
+const parseTrack = (arrayBuffer) => {
   // read
   const data = new Pbf(arrayBuffer).readFields(readData, [])[0]
-  // console.log(data);
   const segments = trackValueArrayToSegments(data, ['lonlat', 'timestamp']);
   const formattedSegments = [segments.map((segment) => 
     ({waypoints: segment.map(point => 
