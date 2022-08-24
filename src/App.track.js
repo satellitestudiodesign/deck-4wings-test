@@ -1,6 +1,4 @@
 import { useState, useMemo } from "react";
-import Map from "react-map-gl";
-import maplibregl from "maplibre-gl";
 import DeckGL from "@deck.gl/react";
 import { BitmapLayer } from "@deck.gl/layers";
 import { TileLayer } from "@deck.gl/geo-layers";
@@ -33,7 +31,7 @@ const basemap = new TileLayer({
   },
 });
 
-const STEP = 2000000000;
+const STEP = 10000000000;
 
 const IDS = [
   "fc3854132-25d3-7d65-e371-b8cec35efa0d",
@@ -160,7 +158,7 @@ function App() {
     setVesselLayers([
       ...IDS.map(id => (
         new VesselLayer({
-          id: `trips-layer-${id}`,
+          id: `vessel-layer-${id}`,
           vesselId: id,
           data: `https://gateway.api.dev.globalfishingwatch.org/v2/vessels/${id}/tracks?binary=true&fields=lonlat%2Ctimestamp&format=valueArray&distance-fishing=50&bearing-val-fishing=1&change-speed-fishing=10&min-accuracy-fishing=2&distance-transit=100&bearing-val-transit=1&change-speed-transit=10&min-accuracy-transit=10&datasets=public-global-fishing-tracks%3Av20201001`,
           loaders: [trackLoader()],
@@ -217,24 +215,12 @@ function App() {
 
   return (
     <>
-      <Map
-        initialViewState={INITIAL_VIEW_STATE}
-        mapLib={maplibregl}
-        style={{ width: "100vw", height: "100vh" }}
-        mapStyle={{
-          version: 8,
-          sources: {},
-          layers: [],
-        }}
-        showTileBoundaries={true}
-      >
         <DeckGL
           controller={true}
           initialViewState={INITIAL_VIEW_STATE}
           layers={[basemap, ...vesselLayers]}
           getTooltip={({ object }) => object && `value: ${object.colorValue}`}
         />
-      </Map>
       <div style={{ position: "fixed", top: 0, right: 0 }}>
         <div>Number of tracks: {IDS.length}</div>
         <div>

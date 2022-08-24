@@ -1,6 +1,4 @@
 import { useState, useMemo } from "react";
-import Map from "react-map-gl";
-import maplibregl from "maplibre-gl";
 import DeckGL from "@deck.gl/react";
 import { BitmapLayer } from "@deck.gl/layers";
 import { GPUGridLayer } from "@deck.gl/aggregation-layers";
@@ -76,24 +74,12 @@ function App() {
 
   return (
     <>
-      <Map
-        initialViewState={INITIAL_VIEW_STATE}
-        mapLib={maplibregl}
-        style={{ width: "100vw", height: "100vh" }}
-        mapStyle={{
-          version: 8,
-          sources: {},
-          layers: [],
-        }}
-        showTileBoundaries={true}
-      >
-        <DeckGL
+      <DeckGL
           controller={true}
           initialViewState={INITIAL_VIEW_STATE}
           layers={layers}
           getTooltip={({ object }) => object && `value: ${object.colorValue}`}
         />
-      </Map>
       <div style={{ position: "fixed", top: 0 }}>
         <input
           type="number"
