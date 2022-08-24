@@ -209,7 +209,7 @@ function App() {
   }, [maxFrame, minFrame, maxHighlightedFrame, minHighlightedFrame]);
 
   const getFirstVesselData = () => {
-    const vessel = vesselLayers.find(layer => layer.id === `trips-layer-${IDS[0]}`)
+    const vessel = vesselLayers.find(layer => layer.id === `vessel-layer-${IDS[0]}`)
     console.log('getFirstVesselData', vessel.getSegments());
   }
 
